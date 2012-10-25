@@ -81,6 +81,7 @@ Presentation = {};
 		this.set_progress();
 		// this.set_options();
 		this.set_styles();
+		this.prepare_images();
 		return this;
 	}
 
@@ -214,7 +215,7 @@ Presentation = {};
 		this.set_styles();
 	}
 
-	Presentation.enter = function() {
+	Presentation.enter = function(section) {
 		this.obj.addClass('full');
 		this.sections.removeClass('nofull');
 
@@ -222,6 +223,7 @@ Presentation = {};
 		this.progressbar.show();
 		this.sections.hide();
 		$('body').bind('keyup', this.uphandler);
+		this.set_current_section(section);
 	}
 
 	Presentation.exit = function() {
@@ -246,14 +248,37 @@ Presentation = {};
 		this.set_styles();
 	}
 
+	Presentation.prepare_images = function() {
+		$.each(this.sections, function(index, section) {
+			var elems = $(this).find('*');
+			if (elems.length == 1) {
+				if (elems[0].tagName.toLowerCase() == 'img') {
+					elems.load(function() {
+						// console.log(this)
+						// console.log(this.width, this.height)
+						var w = this.width;
+						var h = this.height;
+						if (this.width > this.height) {
+							this.style.width = '100%';
+							this.style.maxWidth = w+'px';
+
+						} else {
+							this.style.height = '100%';
+							this.style.maxHeight = h+'px';
+						}
+						this.style.margin = 'auto';
+					});
+				}
+			}
+		});
+	}
+
 })(Presentation);
 
 $(function() {
-	$('#presentation section').addClass('nofull');
+	var pres = Presentation.init('presentation');
 	$('#presentation section').click(function() {
-		var pres = Presentation.init('presentation');
-		pres.set_current_section($(this));
-		// pres.resize();
+		pres.enter($(this));
 	});
 
 });
