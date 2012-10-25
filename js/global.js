@@ -4,6 +4,7 @@ Presentation = {};
 
 		// just one init
 		if (typeof(is_init) != 'undefined') {
+			this.enter();
 			return this;
 		}
 		is_init = true;
@@ -61,7 +62,7 @@ Presentation = {};
 			} else if (e.keyCode == 37) {
 				Presentation.prev();
 			} else if (e.keyCode == 27) {
-				Presentation.exit_fullscreen();
+				Presentation.exit();
 			}
 		});
 
@@ -108,8 +109,6 @@ Presentation = {};
 	}
 
 	Presentation.set_current_section = function(section, num, nopush) {
-		this.construct();
-
 		if (!section && this.current_section) {
 			section = this.current_section;
 			num = this.current_num;
@@ -201,32 +200,23 @@ Presentation = {};
 		this.set_styles();
 	}
 
-	Presentation.exit_fullscreen = function() {
+	Presentation.enter = function() {
+		this.obj.addClass('full');
+		this.sections.removeClass('nofull');
+
+		$('.pr-prev, .pr-next').show();
+		this.progressbar.show();
+		this.sections.hide();
+		$('body').bind('keyup', this.uphandler);
+	}
+
+	Presentation.exit = function() {
 		this.obj.removeClass('full');
 		this.sections.addClass('nofull');
 		console.log('exit full')
-		// this.set_options({fullscreen: 1});
-		this.options.fullscreen = 0;
 		this.options = Object.create(this.default_options);
 		this.set_styles();
 
-
-
-
-		// this.destruct();
-	}
-
-
-	Presentation.construct = function() {
-		$('.pr-prev, .pr-next').hide();
-		this.progressbar.hide();
-		// this.sections.hide();
-		// history.pushState(null, null, location.origin);
-		$('body').bind('keyup', this.uphandler);
-		this.obj.css({width: this.options.width, height: this.options.height});
-	}
-
-	Presentation.destruct = function() {
 		$('.pr-prev, .pr-next').hide();
 		this.progressbar.hide();
 		this.sections.show();
@@ -238,7 +228,6 @@ Presentation = {};
 	Presentation.resize_font = function() {
 		size = parseInt(this.options.height) / 10;
 		size = size.toFixed();
-		console.log(size)
 		this.options.fontsize = size+'px';
 		this.set_styles();
 	}
