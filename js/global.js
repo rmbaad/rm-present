@@ -151,7 +151,7 @@ Presentation = {};
 			}
 		}
 
-		this.resize();
+		// this.resize();
 	}
 
 	Presentation.next = function() {
@@ -216,6 +216,8 @@ Presentation = {};
 	}
 
 	Presentation.enter = function(section) {
+		// TODO move from init
+		console.log('enter')
 		this.obj.addClass('full');
 		this.sections.removeClass('nofull');
 
@@ -224,12 +226,14 @@ Presentation = {};
 		this.sections.hide();
 		$('body').bind('keyup', this.uphandler);
 		this.set_current_section(section);
+		this.set_styles();
+		this.resize();
 	}
 
 	Presentation.exit = function() {
 		this.obj.removeClass('full');
 		this.sections.addClass('nofull');
-		console.log('exit full')
+
 		this.options = Object.create(this.default_options);
 		this.set_styles();
 
