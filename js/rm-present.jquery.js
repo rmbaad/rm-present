@@ -35,7 +35,7 @@ Presentation = {};
 		this.options = Object.create(this.default_options);
 
 		if (options) {
-			this.set_options(options);
+			this.set_options(options, true);
 		}
 
 		// add controls
@@ -334,9 +334,14 @@ Presentation = {};
 	}
 
 	// Set options
-	Presentation.set_options = function(object) {
+	Presentation.set_options = function(object, is_init) {
 		$.each(object, function(key, value) {
 			Presentation.options[key] = value;
+
+			// Set default options if init
+			if (is_init) {
+				Presentation.default_options[key] = value;
+			}
 		});
 	}
 
