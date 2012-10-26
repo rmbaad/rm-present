@@ -31,6 +31,7 @@ Presentation = {};
 							hideprogress: false
 		}
 
+		// Create options object
 		this.options = Object.create(this.default_options);
 
 		if (options) {
@@ -55,6 +56,7 @@ Presentation = {};
 			});
 		}
 
+		// Add progressbar
 		this.obj.append('<div class="pr-progressbar" id="pr-progressbar"></div>');
 		this.progressbar = $('#pr-progressbar');
 
@@ -68,6 +70,7 @@ Presentation = {};
 		return this;
 	}
 
+	// Find current section by hashtag, index or get default
 	Presentation.find_current_section = function() {
 		if (window.location.hash) {
 			find_section = this.obj.find(window.location.hash)
@@ -94,6 +97,7 @@ Presentation = {};
 		}
 	}
 
+	// Set current section
 	Presentation.set_current_section = function(section, num, nopush) {
 		if (!section && this.current_section) {
 			section = this.current_section;
@@ -124,6 +128,7 @@ Presentation = {};
 
 			this.current_id = this.current_section.attr('id');
 
+			// History
 			pathname = location.href.replace(location.hash, '');
 			if (this.current_id) {
 				pathname = pathname + '#' + this.current_id;
@@ -138,6 +143,7 @@ Presentation = {};
 		}
 	}
 
+	// Go to next section
 	Presentation.next = function() {
 		next = this.current_section.next('section');
 		if (next.length) {
@@ -146,6 +152,7 @@ Presentation = {};
 		}
 	}
 
+	// Go to previous section
 	Presentation.prev = function() {
 		prev = this.current_section.prev('section');
 		if (prev.length) {
@@ -154,6 +161,7 @@ Presentation = {};
 		}
 	}
 
+	// Set sizes for global object
 	Presentation.set_styles = function() {
 		options = this.get_options();
 		this.obj.css({
@@ -162,10 +170,12 @@ Presentation = {};
 					});
 	}
 
+	// Get options
 	Presentation.get_options = function() {
 		return this.options;
 	}
 
+	// Update progressbar
 	Presentation.set_progress = function() {
 		this.progressbar.show();
 		var percent = parseInt(this.current_num) / parseInt(this.num_sections) * 100;
@@ -173,6 +183,7 @@ Presentation = {};
 		this.progressbar.animate({'width': percent+'%'}, 150);
 	}
 
+	// Resize section
 	Presentation.resize = function() {
 		this.obj.addClass('full');
 		this.sections.removeClass('nofull');
@@ -183,6 +194,7 @@ Presentation = {};
 		this.set_styles();
 	}
 
+	// Scale presentation
 	Presentation.scale = function() {
 		
 		section_width = this.current_section.width();
@@ -209,6 +221,7 @@ Presentation = {};
 		this.obj.css(this.scale_style);
 	}
 
+	// Set presentation to center
 	Presentation.set_center = function() {
 		css_top  = ($(document).height() - this.current_section.height()) / 2;
 		css_left = ($(document).width()  - this.current_section.width())  / 2;
@@ -219,6 +232,7 @@ Presentation = {};
 		});
 	}
 
+	// Enter in presentation mode
 	Presentation.enter = function(section) {
 		if (this.is_enter) {
 			return false;
@@ -228,7 +242,6 @@ Presentation = {};
 		this.sections.removeClass('nofull');
 
 		$('body').keyup(this.uphandler = function(e) {
-			console.log(e.keyCode)
 			if (e.keyCode == 39) {
 				// Right
 				Presentation.next();
@@ -252,8 +265,7 @@ Presentation = {};
 		})
 
 		$(window).bind('popstate', this.pophandler = function(e) {
-			Presentation.find_current_section();
-			Presentation.set_current_section(null, null, 1);
+			Presentation.enter();
 		});
 
 		$('.pr-prev, .pr-next').show();
@@ -266,6 +278,7 @@ Presentation = {};
 		this.set_center();
 	}
 
+	// Exit from presentation mode
 	Presentation.exit = function() {
 		this.obj.removeClass('full');
 		this.sections.addClass('nofull');
@@ -295,6 +308,7 @@ Presentation = {};
 		this.obj.css(this.scale_style);
 	}
 
+	// Scale images
 	Presentation.prepare_images = function() {
 		$.each(this.sections, function(index, section) {
 			var elems = $(this).find('*');
@@ -319,6 +333,7 @@ Presentation = {};
 		});
 	}
 
+	// Set options
 	Presentation.set_options = function(object) {
 		$.each(object, function(key, value) {
 			Presentation.options[key] = value;
