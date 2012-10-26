@@ -3,9 +3,13 @@
 		<script src="js/jquery-1.8.2.min.js"></script>
 		<script src="js/rm-present.jquery.js"></script>
 		<style>
+			body {
+				font-family: Verdana;
+				background: #fff;
+			}
+
 			#presentation {
 				font-size: 20px;
-				background-color: #ccc;
 				overflow: hidden;
 			}
 
@@ -31,7 +35,7 @@
 				left: 0;
 				width: 0;
 				height: 3px;
-				background-color: red;
+				background-color: #666;
 				z-index: 3;
 			}
 
@@ -41,7 +45,11 @@
 				height: 360px;
 				float: left;
 				margin: 10px;
-				border: 1px solid #000;
+				border: 1px solid #ccc;
+			}
+
+			#presentation .nofull:hover {
+				border: 1px solid #999;
 			}
 
 			#presentation section {
@@ -50,19 +58,30 @@
 				height: 100%;
 			}
 
-			#presentation section img {
-
-			}
-
 			#presentation.full {
 				position: absolute !important;
 				top: 0;
 				left: 0;
-				background-color: #000;
 			}
 
-			#presentation section table {
-				font-size: 100%;
+			#presentation .present-fields {
+				margin: 20px;
+			}
+
+			.demo-table {
+				margin: 30px auto;
+				border-collapse: collapse;
+				border: 1px solid #ccc;
+
+			}
+
+			.demo-table td, .demo-table th {
+				border: 1px solid #ccc;
+				padding: 5px;			
+			}
+
+			.demo-table th {
+				background-color: #ececec;
 			}
 		</style>
 	</head>
@@ -70,6 +89,7 @@
 		<div id="presentation">
 			<section id="Lamps">
 				<img src="images/image.jpg">
+				Лампочки :)
 			</section>
 
 			<section id="Cat">
@@ -77,34 +97,59 @@
 			</section>
 
 			<section>
-				<ul>
-					<li>Москва</li>
-					<li>Санкт-Петербург</li>
-					<li>Екатеринбург</li>
-					<li>Москва</li>
-					<li>Санкт-Петербург</li>
-					<li>Екатеринбург</li>
-					<li>Москва</li>
-					<li>Санкт-Петербург</li>
-					<li>Екатеринбург</li>
-				</ul>
+				<div class="present-fields">
+					<ul>
+						<li>Москва</li>
+						<li>Санкт-Петербург</li>
+						<li>Екатеринбург</li>
+						<li>Псков</li>
+						<li>Нижний Новгород</li>
+						<li>Калининград</li>
+					</ul>
+				</div>
 			</section>
 
 			<section id="Table">
-				<table>
-					<tr>
-						<th>ID</th>
-						<th>Name</th>
-					</tr>
-					<tr>
-						<td>111</td>
-						<td>222</td>
-					</tr>
-				</table>
+				<div class="present-fields">
+					<h3>Тикеты</h3>
+					<table class="demo-table">
+						<tr>
+							<th>Дата</th>
+							<th>Тема</th>
+							<th>Статус</th>
+						</tr>
+						<tr>
+							<td>12.09.12</td>
+							<td>Сверка с рекламодателями</td>
+							<td>новый</td>
+						</tr>
+						<tr>
+							<td>27.09.12</td>
+							<td>Не отключаются офферы</td>
+							<td>обработан</td>
+						</tr>
+						<tr>
+							<td>19.09.12</td>
+							<td>Домен для ротатора</td>
+							<td>обработан</td>
+						</tr>
+					</table>
+				</div>
 			</section>
 
 			<section id="Soldier">
 				<img src="images/soldier.png" id="ss">
+			</section>
+
+			<section id="Soldier">
+				<div class="present-fields">
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				</div>
 			</section>
 		</div>
 	</body>

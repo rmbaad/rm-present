@@ -26,7 +26,6 @@ Presentation = {};
 		this.default_options = {
 							width : '640px',
 							height : '360px',
-							// fontsize: '100%',
 							fullscreen : true,
 							addcontrols: false,
 							hideprogress: false
@@ -160,8 +159,6 @@ Presentation = {};
 		this.obj.css({
 						'width'		: options.width,
 						'height'	: options.height
-						// ,
-						// 'position'	: 'relative'
 					});
 	}
 
@@ -173,7 +170,7 @@ Presentation = {};
 		this.progressbar.show();
 		var percent = parseInt(this.current_num) / parseInt(this.num_sections) * 100;
 		percent = percent.toFixed();
-		this.progressbar.animate({'width': percent+'%'}, 200);
+		this.progressbar.animate({'width': percent+'%'}, 150);
 	}
 
 	Presentation.resize = function() {
@@ -191,8 +188,8 @@ Presentation = {};
 		section_width = this.current_section.width();
 		section_height = this.current_section.height();
 
-		window_width = $(window).width();
-		window_height = $(window).height();
+		window_width = $(document).width();
+		window_height = $(document).height();
 
 
 		if (window_width / window_height > 1.7) {
@@ -201,12 +198,28 @@ Presentation = {};
 			scale = window_width / section_width;
 		}
 
-		this.obj.css('transform', 'scale('+scale+')');
+		var scale2 = Math.max(
+			section_width / window_width,
+			section_height / window_height
+		);
+
+		console.log(section_width, section_height);
+		console.log(window_width, window_height);
+
+		this.scale_style = {
+					  '-webkit-transform': 'scale('+scale+')',
+					     '-moz-transform': 'scale('+scale+')',
+					      '-ms-transform': 'scale('+scale+')',
+					       '-o-transform': 'scale('+scale+')',
+					          'transform': 'scale('+scale+')'
+					}
+
+		this.obj.css(this.scale_style);
 	}
 
 	Presentation.set_center = function() {
-		css_top  = ($(window).outerHeight() - this.current_section.height()) / 2;
-		css_left = ($(window).width()  - this.current_section.width())  / 2;
+		css_top  = ($(document).height() - this.current_section.height()) / 2;
+		css_left = ($(document).width()  - this.current_section.width())  / 2;
 
 		this.obj.css({
 			top: css_top,
@@ -267,7 +280,17 @@ Presentation = {};
 		$(window).unbind('resize', this.pophandler);
 		this.obj.css({width: 'auto', height: 'auto'});
 		this.is_enter = false;
-		this.obj.css('transform', 'none');
+
+
+		this.scale_style = {
+			  '-webkit-transform': 'none',
+			     '-moz-transform': 'none',
+			      '-ms-transform': 'none',
+			       '-o-transform': 'none',
+			          'transform': 'none'
+			}
+
+		this.obj.css(this.scale_style);
 	}
 
 	Presentation.prepare_images = function() {
