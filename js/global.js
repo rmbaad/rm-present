@@ -1,6 +1,6 @@
 Presentation = {};
 (function(Presentation) {
-	Presentation.init = function(id) {
+	Presentation.init = function(id, options) {
 
 		// just one init
 		if (typeof(is_init) != 'undefined') {
@@ -33,6 +33,10 @@ Presentation = {};
 		}
 
 		this.options = Object.create(this.default_options);
+
+		if (options) {
+			this.set_options(options);
+		}
 
 		// add controls
 		if (this.options.addcontrols) {
@@ -263,8 +267,10 @@ Presentation = {};
 		});
 	}
 
-})(Presentation);
+	Presentation.set_options = function(object) {
+		$.each(object, function(key, value) {
+			Presentation.options[key] = value;
+		});
+	}
 
-$(function() {
-	var pres = Presentation.init('presentation');
-});
+})(Presentation);
