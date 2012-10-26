@@ -198,14 +198,6 @@ Presentation = {};
 			scale = window_width / section_width;
 		}
 
-		var scale2 = Math.max(
-			section_width / window_width,
-			section_height / window_height
-		);
-
-		console.log(section_width, section_height);
-		console.log(window_width, window_height);
-
 		this.scale_style = {
 					  '-webkit-transform': 'scale('+scale+')',
 					     '-moz-transform': 'scale('+scale+')',
@@ -236,12 +228,22 @@ Presentation = {};
 		this.sections.removeClass('nofull');
 
 		$('body').keyup(this.uphandler = function(e) {
+			console.log(e.keyCode)
 			if (e.keyCode == 39) {
+				// Right
 				Presentation.next();
 			} else if (e.keyCode == 37) {
+				// Left
 				Presentation.prev();
 			} else if (e.keyCode == 27) {
+				// Escale
 				Presentation.exit();
+			} else if (e.keyCode == 36) {
+				// Home
+				Presentation.set_current_section(Presentation.first_section);
+			} else if (e.keyCode == 35) {
+				// End
+				Presentation.set_current_section(Presentation.last_section);
 			}
 		});
 
