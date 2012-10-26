@@ -12,3 +12,6 @@ TODO:
 <div>align center</div>
 <div>design</div>
 <div>make a jQuery plugin</div>
+
+BUGS:
+<div>exit() + back = bug</div>
