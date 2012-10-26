@@ -180,24 +180,33 @@ Presentation = {};
 		this.obj.addClass('full');
 		this.sections.removeClass('nofull');
 		if (this.options.fullscreen) {
-			// this.options.width = window.innerWidth;
-			// this.options.height = window.innerHeight;
+			this.set_center();
 			this.scale();
 		}
 		this.set_styles();
 	}
 
 	Presentation.scale = function() {
-		this.obj.css({
-						
-					});
+		
+		section_width = this.current_section.width();
+		section_height = this.current_section.height();
+
+		window_width = $(window).width();
+		window_height = $(window).height();
+
+
+		if (window_width / window_height > 1.7) {
+			scale = window_height / section_height;
+		} else {
+			scale = window_width / section_width;
+		}
+
+		this.obj.css('transform', 'scale('+scale+')');
 	}
 
 	Presentation.set_center = function() {
 		css_top  = ($(window).outerHeight() - this.current_section.height()) / 2;
 		css_left = ($(window).width()  - this.current_section.width())  / 2;
-
-		console.log( $(window).height(), this.current_section.height() )
 
 		this.obj.css({
 			top: css_top,
@@ -209,7 +218,6 @@ Presentation = {};
 		if (this.is_enter) {
 			return false;
 		}
-
 
 		this.obj.addClass('full');
 		this.sections.removeClass('nofull');
@@ -259,6 +267,7 @@ Presentation = {};
 		$(window).unbind('resize', this.pophandler);
 		this.obj.css({width: 'auto', height: 'auto'});
 		this.is_enter = false;
+		this.obj.css('transform', 'none');
 	}
 
 	Presentation.prepare_images = function() {
