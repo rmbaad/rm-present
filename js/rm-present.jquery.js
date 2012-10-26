@@ -159,8 +159,9 @@ Presentation = {};
 		options = this.get_options();
 		this.obj.css({
 						'width'		: options.width,
-						'height'	: options.height,
-						'position'	: 'relative'
+						'height'	: options.height
+						// ,
+						// 'position'	: 'relative'
 					});
 	}
 
@@ -181,17 +182,34 @@ Presentation = {};
 		if (this.options.fullscreen) {
 			// this.options.width = window.innerWidth;
 			// this.options.height = window.innerHeight;
-			this.obj.css({
-							
-						});
+			this.scale();
 		}
 		this.set_styles();
+	}
+
+	Presentation.scale = function() {
+		this.obj.css({
+						
+					});
+	}
+
+	Presentation.set_center = function() {
+		css_top  = ($(window).outerHeight() - this.current_section.height()) / 2;
+		css_left = ($(window).width()  - this.current_section.width())  / 2;
+
+		console.log( $(window).height(), this.current_section.height() )
+
+		this.obj.css({
+			top: css_top,
+			left: css_left
+		});
 	}
 
 	Presentation.enter = function(section) {
 		if (this.is_enter) {
 			return false;
 		}
+
 
 		this.obj.addClass('full');
 		this.sections.removeClass('nofull');
@@ -222,6 +240,7 @@ Presentation = {};
 		this.set_styles();
 		this.resize();
 		this.is_enter = true;
+		this.set_center();
 	}
 
 	Presentation.exit = function() {
