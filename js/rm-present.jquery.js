@@ -137,7 +137,9 @@ Presentation = {};
 				pathname = pathname + '#' + index;
 			}
 
+			// No push for history moves
 			if (!nopush) {
+				console.log('push')
 				history.pushState(null, null, pathname);
 			}
 		}
@@ -264,8 +266,9 @@ Presentation = {};
 			Presentation.resize();
 		})
 
-		$(window).bind('popstate', this.pophandler = function(e) {
-			Presentation.enter();
+		$(window).bind('popstate', this.pophandler = function() {
+			Presentation.find_current_section();
+			Presentation.set_current_section(this.current_section, null, true);
 		});
 
 		$('.pr-prev, .pr-next').show();
