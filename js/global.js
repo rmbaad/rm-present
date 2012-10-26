@@ -59,7 +59,9 @@ Presentation = {};
 
 		// detect current section
 		this.find_current_section();
-
+		if (this.hashtag) {
+			this.enter();
+		}
 		return this;
 	}
 
@@ -77,7 +79,7 @@ Presentation = {};
 			if (find_section) {
 				this.current_section = find_section;
 				this.current_num = $('section').index(this.current_section) + 1;
-				this.enter();
+				this.hashtag = true;
 			}
 		} else {
 			this.current_section = false;
