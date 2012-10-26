@@ -12,7 +12,13 @@ Presentation = {};
 		// set object and sections
 		this.obj = $('#'+id);
 		this.sections = this.obj.find('section');
-		this.sections.hide();
+
+		this.sections.addClass('nofull');
+
+		this.sections.click(function() {
+			Presentation.enter($(this));
+		});
+		
 		this.num_sections = this.sections.length;
 		this.first_section = this.obj.find('section:first');
 		this.last_section = this.obj.find('section:last');
@@ -30,9 +36,6 @@ Presentation = {};
 		}
 
 		this.options = Object.create(this.default_options);
-
-		// show first action
-		this.current_section.show();
 
 		// add controls
 		if (this.options.addcontrols) {
@@ -53,34 +56,8 @@ Presentation = {};
 		}
 
 		this.obj.append('<div class="pr-progressbar" id="pr-progressbar"></div>');
-
 		this.progressbar = $('#pr-progressbar');
 
-
-		$('body').keyup(this.uphandler = function(e) {
-			if (e.keyCode == 39) {
-				Presentation.next();
-			} else if (e.keyCode == 37) {
-				Presentation.prev();
-			} else if (e.keyCode == 27) {
-				Presentation.exit();
-			}
-		});
-
-		// change font size with resize
-		$(window).resize(function() {
-			Presentation.resize();
-		})
-
-		// detect hash change
-		$(window).bind( 'popstate',function(e) {
-			Presentation.find_current_section();
-			Presentation.set_current_section(null, null, 1);
-		});
-
-		this.set_progress();
-		// this.set_options();
-		this.set_styles();
 		this.prepare_images();
 		return this;
 	}
@@ -152,8 +129,6 @@ Presentation = {};
 				history.pushState(null, null, pathname);
 			}
 		}
-
-		// this.resize();
 	}
 
 	Presentation.next = function() {
@@ -161,7 +136,7 @@ Presentation = {};
 		if (next.length) {
 			// FIXME detect this.current_num
 			num = this.current_num + 1;
-			Presentation.set_current_section(next, num);
+			this.set_current_section(next, num);
 		}
 	}
 
@@ -170,7 +145,7 @@ Presentation = {};
 		if (prev.length) {
 			// FIXME detect this.current_num
 			num = this.current_num - 1;
-			Presentation.set_current_section(prev, num);
+			this.set_current_section(prev, num);
 		}
 	}
 
@@ -188,12 +163,6 @@ Presentation = {};
 		return this.options;
 	}
 
-	// Presentation.set_options = function(options) {
-	// 	// this.options = $.extend({}, this.default_options, options);
-	// 	this.options = $.extend({}, opt, this.options);
-	// 	console.log(this.options)
-	// }
-
 	Presentation.set_progress = function() {
 		this.progressbar.show();
 		var percent = parseInt(this.current_num) / parseInt(this.num_sections) * 100;
@@ -205,11 +174,6 @@ Presentation = {};
 		this.obj.addClass('full');
 		this.sections.removeClass('nofull');
 		if (this.options.fullscreen) {
-			// options = {
-			// 				width: window.innerWidth,
-			// 				height: window.innerHeight
-			// }
-			// this.set_options(options);
 			this.options.width = window.innerWidth;
 			this.options.height = window.innerHeight;
 		}
@@ -218,15 +182,31 @@ Presentation = {};
 	}
 
 	Presentation.enter = function(section) {
-		// TODO move from init
-		console.log('enter')
 		this.obj.addClass('full');
 		this.sections.removeClass('nofull');
 
+		$('body').keyup(this.uphandler = function(e) {
+			if (e.keyCode == 39) {
+				Presentation.next();
+			} else if (e.keyCode == 37) {
+				Presentation.prev();
+			} else if (e.keyCode == 27) {
+				Presentation.exit();
+			}
+		});
+
+		$(window).resize(this.resizehandler = function() {
+			Presentation.resize();
+		})
+
+		$(window).bind('popstate', this.pophandler = function(e) {
+			Presentation.find_current_section();
+			Presentation.set_current_section(null, null, 1);
+		});
+
 		$('.pr-prev, .pr-next').show();
-		this.progressbar.show();
+		this.set_progress();
 		this.sections.hide();
-		$('body').bind('keyup', this.uphandler);
 		this.set_current_section(section);
 		this.set_styles();
 		this.resize();
@@ -244,6 +224,8 @@ Presentation = {};
 		this.sections.show();
 		history.pushState(null, null, location.origin);
 		$('body').unbind('keyup', this.uphandler);
+		$(window).unbind('resize', this.resizehandler);
+		$(window).unbind('resize', this.pophandler);
 		this.obj.css({width: 'auto', height: 'auto'});
 	}
 
@@ -260,8 +242,6 @@ Presentation = {};
 			if (elems.length == 1) {
 				if (elems[0].tagName.toLowerCase() == 'img') {
 					elems.load(function() {
-						// console.log(this)
-						// console.log(this.width, this.height)
 						var w = this.width;
 						var h = this.height;
 						if (this.width > this.height) {
@@ -283,8 +263,4 @@ Presentation = {};
 
 $(function() {
 	var pres = Presentation.init('presentation');
-	$('#presentation section').click(function() {
-		pres.enter($(this));
-	});
-
 });
