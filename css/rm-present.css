@@ -1,0 +1,59 @@
+#presentation {
+	font-size: 20px;
+	overflow: hidden;
+}
+
+#presentation .left-control {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 50%;
+	height: 100%;
+}
+
+#presentation .right-control {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 50%;
+	height: 100%;
+}
+
+#presentation .pr-progressbar {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 0;
+	height: 3px;
+	background-color: #666;
+	z-index: 3;
+}
+
+#presentation .nofull {
+	display: block;
+	width: 640px;
+	height: 360px;
+	float: left;
+	margin: 10px;
+	border: 1px solid #ccc;
+}
+
+#presentation .nofull:hover {
+	border: 1px solid #999;
+}
+
+#presentation section {
+	overflow: hidden;
+	background-color: #fff;
+	height: 100%;
+}
+
+#presentation.full {
+	position: absolute !important;
+	top: 0;
+	left: 0;
+}
+
+#presentation .present-fields {
+	margin: 20px;
+}
