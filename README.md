@@ -11,6 +11,3 @@ TODO:
 <div>move styles in css-file</div>
 <div>design</div>
 <div>make a jQuery plugin</div>
-
-BUGS:
-<div>exit() + back = bug</div>
