@@ -196,7 +196,6 @@ Presentation = {};
 
 	Presentation.set_progress = function() {
 		this.progressbar.show();
-		console.log(this.current_num, this.num_sections)
 		var percent = parseInt(this.current_num) / parseInt(this.num_sections) * 100;
 		percent = percent.toFixed();
 		this.progressbar.animate({'width': percent+'%'}, 200);
