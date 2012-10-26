@@ -26,7 +26,7 @@ Presentation = {};
 							fontsize: '100%',
 							fullscreen : true,
 							addcontrols: false,
-							hideprogress: true
+							hideprogress: false
 		}
 
 		this.options = Object.create(this.default_options);
@@ -119,10 +119,12 @@ Presentation = {};
 		if (section && section.length) {
 			this.sections.hide();
 			section.show();
-			this.current_section = section;
 
+			this.current_section = section;
 			if (num) {
 				this.current_num = num;
+			} else {
+				this.current_num = $('section').index(this.current_section) + 1;
 			}
 			Presentation.set_progress();
 
@@ -194,6 +196,7 @@ Presentation = {};
 
 	Presentation.set_progress = function() {
 		this.progressbar.show();
+		console.log(this.current_num, this.num_sections)
 		var percent = parseInt(this.current_num) / parseInt(this.num_sections) * 100;
 		percent = percent.toFixed();
 		this.progressbar.animate({'width': percent+'%'}, 200);
