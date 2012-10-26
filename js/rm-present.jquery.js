@@ -139,7 +139,6 @@ Presentation = {};
 
 			// No push for history moves
 			if (!nopush) {
-				console.log('push')
 				history.pushState(null, null, pathname);
 			}
 		}
