@@ -23,14 +23,11 @@ Presentation = {};
 		this.first_section = this.obj.find('section:first');
 		this.last_section = this.obj.find('section:last');
 
-		// detect current section
-		this.find_current_section();
-
 		this.default_options = {
-							width : '50%',
-							height : '500px',
-							fontsize: '100%',
-							fullscreen : true,
+							width : '640px',
+							height : '360px',
+							// fontsize: '100%',
+							fullscreen : false,
 							addcontrols: false,
 							hideprogress: false
 		}
@@ -59,6 +56,10 @@ Presentation = {};
 		this.progressbar = $('#pr-progressbar');
 
 		this.prepare_images();
+
+		// detect current section
+		this.find_current_section();
+
 		return this;
 	}
 
@@ -76,6 +77,7 @@ Presentation = {};
 			if (find_section) {
 				this.current_section = find_section;
 				this.current_num = $('section').index(this.current_section) + 1;
+				this.enter();
 			}
 		} else {
 			this.current_section = false;
@@ -154,7 +156,7 @@ Presentation = {};
 		this.obj.css({
 						'width'		: options.width,
 						'height'	: options.height,
-						'font-size'  : options.fontsize,
+						// 'font-size'  : options.fontsize,
 						'position'	: 'relative'
 					});
 	}
@@ -230,10 +232,10 @@ Presentation = {};
 	}
 
 	Presentation.resize_font = function() {
-		size = parseInt(this.options.height) / 10;
-		size = size.toFixed();
-		this.options.fontsize = size+'px';
-		this.set_styles();
+		// size = parseInt(this.options.height) / 10;
+		// size = size.toFixed();
+		// this.options.fontsize = size+'px';
+		// this.set_styles();
 	}
 
 	Presentation.prepare_images = function() {
