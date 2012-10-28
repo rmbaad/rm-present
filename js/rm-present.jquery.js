@@ -94,11 +94,6 @@ Presentation = {};
 			this.exit();
 			return false;
 		}
-
-		if (!this.current_section) {
-			this.current_section = this.first_section;
-			this.current_num = 1;
-		}
 	}
 
 	// Set current section
