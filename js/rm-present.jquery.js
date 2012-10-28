@@ -86,9 +86,13 @@ Presentation = {};
 				this.current_section = find_section;
 				this.current_num = $('section').index(this.current_section) + 1;
 				this.hashtag = true;
+				this.enter();
+				return true;
 			}
 		} else {
 			this.current_section = false;
+			this.exit();
+			return false;
 		}
 
 		if (!this.current_section) {
