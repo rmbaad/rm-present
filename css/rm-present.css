@@ -31,15 +31,39 @@
 
 #presentation .nofull {
 	display: block;
-	width: 640px;
-	height: 360px;
+	width: 576px;
+	height: 324px;
 	float: left;
 	margin: 10px;
 	border: 1px solid #ccc;
+	-moz-box-shadow: 0 0 5px #ccc;
+	-webkit-box-shadow: 0 0 5px#ccc;
+	box-shadow: 0 0 5px #ccc;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+
 }
 
 #presentation .nofull:hover {
 	border: 1px solid #999;
+	-moz-box-shadow: 0 0 5px #999;
+	-webkit-box-shadow: 0 0 5px#999;
+	box-shadow: 0 0 5px #999;
+}
+
+#presentation .nofull.lastopened {
+	border: 1px solid #7EA1C4;
+	-moz-box-shadow: 0 0 5px #7EA1C4;
+	-webkit-box-shadow: 0 0 5px#7EA1C4;
+	box-shadow: 0 0 5px #7EA1C4;
+}
+
+#presentation .nofull.lastopened:hover {
+	border: 1px solid #4A6987;
+	-moz-box-shadow: 0 0 5px #4A6987;
+	-webkit-box-shadow: 0 0 5px#4A6987;
+	box-shadow: 0 0 5px #4A6987;
 }
 
 #presentation section {

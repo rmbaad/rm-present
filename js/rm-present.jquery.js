@@ -239,6 +239,7 @@ Presentation = {};
 		}
 
 		this.obj.addClass('full');
+		this.sections.removeClass('lastopened');
 		this.sections.removeClass('nofull');
 
 		$('body').keyup(this.uphandler = function(e) {
@@ -297,6 +298,9 @@ Presentation = {};
 		this.obj.css({width: 'auto', height: 'auto'});
 		this.is_enter = false;
 
+		if (this.current_section) {
+			this.current_section.addClass('lastopened');
+		}
 
 		this.scale_style = {
 			  '-webkit-transform': 'none',
