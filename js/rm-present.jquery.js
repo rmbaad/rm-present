@@ -287,6 +287,12 @@ Presentation = {};
 			Presentation.set_current_section(this.current_section, null, true);
 		});
 
+		// Black screen for fullscreen mode
+		if (this.options.fullscreen) {
+			this.obj.before('<div id="presentation_back"></div>');
+			this.presentation_back = $('#presentation_back');
+		}
+
 		$('.pr-prev, .pr-next').show();
 		this.set_progress();
 		this.sections.hide();
@@ -342,6 +348,8 @@ Presentation = {};
 
 		this.obj.css(this.scale_style);
 		this.obj.removeClass('enter');
+
+		this.presentation_back.remove();
 	}
 
 	// Scale images
@@ -377,7 +385,10 @@ Presentation = {};
 				Presentation.default_options[key] = value;
 			}
 		});
+	}
 
+	Presentation.destruct = function() {
+		this.is_init = false;
 	}
 
 })(Presentation);
