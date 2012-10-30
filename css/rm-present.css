@@ -6,6 +6,7 @@
 
 #presentation.enter {
 	border: 1px solid #666;
+	position: relative;
 }
 
 #presentation .left-control {
