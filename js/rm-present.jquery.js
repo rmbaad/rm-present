@@ -24,8 +24,8 @@ Presentation = {};
 		this.last_section = this.obj.find('section:last');
 
 		this.default_options = {
-							width : '640px',
-							height : '360px',
+							width : '576px',
+							height : '324px',
 							fullscreen : true,
 							addcontrols: false,
 							hideprogress: false
@@ -67,6 +67,12 @@ Presentation = {};
 		if (this.hashtag) {
 			this.enter();
 		}
+
+		if (this.options.embedded) {
+			this.sections.hide();
+			this.first_section.show();
+		}
+
 		return this;
 	}
 
@@ -185,7 +191,9 @@ Presentation = {};
 
 	// Resize section
 	Presentation.resize = function() {
-		this.obj.addClass('full');
+		if (!this.options.embedded) {
+			this.obj.addClass('full');
+		}
 		this.sections.removeClass('nofull');
 		if (this.options.fullscreen) {
 			this.set_center();
@@ -202,8 +210,6 @@ Presentation = {};
 
 		window_width = window.innerWidth;
 		window_height = window.innerHeight;
-
-		console.log(window_width, window_height)
 
 		// 16:9
 		if (window_width / window_height > 1.7) {
@@ -225,6 +231,12 @@ Presentation = {};
 
 	// Set presentation to center
 	Presentation.set_center = function() {
+
+		// Not set center if embedded and not fullscreen
+		if (this.options.embedded && !this.options.fullscreen) {
+			return true;
+		}
+
 		css_top  = (window.innerHeight - this.current_section.height()) / 2;
 		css_left = (window.innerWidth  - this.current_section.width())  / 2;
 
@@ -240,7 +252,10 @@ Presentation = {};
 			return false;
 		}
 
-		this.obj.addClass('full');
+		// No full class if embedded
+		if (!this.options.embedded || this.options.fullscreen) {
+			this.obj.addClass('full');
+		}
 		this.sections.removeClass('lastopened');
 		this.sections.removeClass('nofull');
 
@@ -280,6 +295,10 @@ Presentation = {};
 		this.resize();
 		this.is_enter = true;
 		this.set_center();
+
+		if (!this.options.fullscreen) {
+			this.obj.addClass('enter');
+		}
 	}
 
 	// Exit from presentation mode
@@ -287,12 +306,21 @@ Presentation = {};
 		this.obj.removeClass('full');
 		this.sections.addClass('nofull');
 
+		// Set options to default
 		this.options = Object.create(this.default_options);
 		this.set_styles();
 
 		$('.pr-prev, .pr-next').hide();
 		this.progressbar.hide();
-		this.sections.show();
+
+		// Show only first section if embedded
+		if (this.options.embedded) {
+			this.sections.hide();
+			this.first_section.show();
+		} else {
+			this.sections.show();
+		}
+
 		history.pushState(null, null, location.href.replace(location.hash, ''));
 		$('body').unbind('keyup', this.uphandler);
 		$(window).unbind('resize', this.resizehandler);
@@ -313,6 +341,7 @@ Presentation = {};
 			}
 
 		this.obj.css(this.scale_style);
+		this.obj.removeClass('enter');
 	}
 
 	// Scale images
@@ -325,13 +354,11 @@ Presentation = {};
 					elems.load(function() {
 						var w = this.width;
 						var h = this.height;
+						console.log(this)
 						if (this.width > this.height) {
 							this.style.width = '100%';
-							this.style.maxWidth = w+'px';
-
 						} else {
 							this.style.height = '100%';
-							this.style.maxHeight = h+'px';
 						}
 						this.style.margin = 'auto';
 					});
@@ -350,6 +377,7 @@ Presentation = {};
 				Presentation.default_options[key] = value;
 			}
 		});
+
 	}
 
 })(Presentation);

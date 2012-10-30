@@ -1,6 +1,11 @@
 #presentation {
 	font-size: 20px;
 	overflow: hidden;
+	background-color: #fff;
+}
+
+#presentation.enter {
+	border: 1px solid #666;
 }
 
 #presentation .left-control {
@@ -42,7 +47,6 @@
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	border-radius: 3px;
-
 }
 
 #presentation .nofull:hover {
