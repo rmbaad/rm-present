@@ -200,10 +200,12 @@ Presentation = {};
 		section_width = this.current_section.width();
 		section_height = this.current_section.height();
 
-		window_width = $(document).width();
-		window_height = $(document).height();
+		window_width = window.innerWidth;
+		window_height = window.innerHeight;
 
+		console.log(window_width, window_height)
 
+		// 16:9
 		if (window_width / window_height > 1.7) {
 			scale = window_height / section_height;
 		} else {
@@ -223,8 +225,8 @@ Presentation = {};
 
 	// Set presentation to center
 	Presentation.set_center = function() {
-		css_top  = ($(document).height() - this.current_section.height()) / 2;
-		css_left = ($(document).width()  - this.current_section.width())  / 2;
+		css_top  = (window.innerHeight - this.current_section.height()) / 2;
+		css_left = (window.innerWidth  - this.current_section.width())  / 2;
 
 		this.obj.css({
 			top: css_top,
