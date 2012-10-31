@@ -24,11 +24,12 @@ Presentation = {};
 		this.last_section = this.obj.find('section:last');
 
 		this.default_options = {
-							width : '576px',
-							height : '324px',
-							fullscreen : true,
-							addcontrols: false,
-							hideprogress: false
+								width:			'576px',	// width of presentation if not fullscreen
+								height:			'324px',	// -- || --
+								fullscreen:		true,		// show presentation in fullscreen
+								addcontrols:	false,		// add left and right navigation block
+								hideprogress:	false,		// hide progressbar on fullscreen images
+								showpages:		true		// show current page
 		}
 
 		// Create options object
@@ -59,6 +60,9 @@ Presentation = {};
 		// Add progressbar
 		this.obj.append('<div class="pr-progressbar" id="pr-progressbar"></div>');
 		this.progressbar = $('#pr-progressbar');
+		// Add pages
+		this.obj.append('<div class="pr-pages" id="pr-pages"></div>');
+		this.pages = $('#pr-pages');
 
 		this.prepare_images();
 
@@ -127,6 +131,7 @@ Presentation = {};
 				if (elems.length == 1) {
 					if (elems[0].tagName.toLowerCase() == 'img') {
 						this.progressbar.hide();
+						this.pages.hide();
 					}
 				}
 			}
@@ -184,6 +189,10 @@ Presentation = {};
 	// Update progressbar
 	Presentation.set_progress = function() {
 		this.progressbar.show();
+		if (this.options.showpages) {
+			this.pages.show();
+			this.pages.text(this.current_num);
+		}
 		var percent = parseInt(this.current_num) / parseInt(this.num_sections) * 100;
 		percent = percent.toFixed();
 		this.progressbar.animate({'width': percent+'%'}, 150);
@@ -318,6 +327,7 @@ Presentation = {};
 
 		$('.pr-prev, .pr-next').hide();
 		this.progressbar.hide();
+		this.pages.hide();
 
 		// Show only first section if embedded
 		if (this.options.embedded) {
