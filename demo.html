@@ -6,7 +6,7 @@
 		<link rel="stylesheet" type="text/css" href="css/rm-present.css">
 		<style>
 			body {
-				font-family: Verdana;
+				font-family: sans-serif;
 				background: #fff;
 			}
 
@@ -113,7 +113,8 @@
 	</body>
 	<script>
 	$(function() {
-		var pres = Presentation.init('presentation', {fullscreen: true, embedded: false});
+		// var pres = new Presentation.init('presentation', {fullscreen: true, embedded: false});
+		var pres = new Presentation('presentation', {fullscreen: true, embedded: false});
 	});
 	</script>
 </html>

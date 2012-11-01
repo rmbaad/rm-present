@@ -1,7 +1,8 @@
-Presentation = {};
-(function(Presentation) {
-	Presentation.init = function(id, options) {
+function Presentation(id, options) {
 
+	var this_ = this;
+
+	this.init = function() {
 		// just one init
 		if (typeof(is_init) != 'undefined') {
 			this.enter();
@@ -16,7 +17,7 @@ Presentation = {};
 		this.sections.addClass('nofull');
 
 		this.sections.click(function() {
-			Presentation.enter($(this));
+			this_.enter($(this));
 		});
 		
 		this.num_sections = this.sections.length;
@@ -27,6 +28,7 @@ Presentation = {};
 								width:			'576px',	// width of presentation if not fullscreen
 								height:			'324px',	// -- || --
 								fullscreen:		true,		// show presentation in fullscreen
+								embedded:		false,
 								addcontrols:	false,		// add left and right navigation block
 								hideprogress:	false,		// hide progressbar on fullscreen images
 								showpages:		true		// show current page
@@ -47,13 +49,13 @@ Presentation = {};
 			// add next litener
 			this.next_buttons = $('.pr-next');
 			this.next_buttons.click(function() {
-				Presentation.next();
+				this_.next();
 			});
 
 			// add prev litener
 			this.prev_buttons = $('.pr-prev');
 			this.prev_buttons.click(function() {
-				Presentation.prev();
+				this_.prev();
 			});
 		}
 
@@ -78,10 +80,10 @@ Presentation = {};
 		}
 
 		return this;
-	}
+	};
 
 	// Find current section by hashtag, index or get default
-	Presentation.find_current_section = function() {
+	this.find_current_section = function() {
 		if (window.location.hash) {
 			find_section = this.obj.find(window.location.hash)
 			if (!find_section.length) {
@@ -101,13 +103,15 @@ Presentation = {};
 			}
 		} else {
 			this.current_section = false;
-			this.exit();
+			if (this.is_enter) {
+				this.exit();
+			}
 			return false;
 		}
 	}
 
 	// Set current section
-	Presentation.set_current_section = function(section, num, nopush) {
+	this.set_current_section = function(section, num, nopush) {
 		if (!section && this.current_section) {
 			section = this.current_section;
 			num = this.current_num;
@@ -123,7 +127,7 @@ Presentation = {};
 			} else {
 				this.current_num = $('section').index(this.current_section) + 1;
 			}
-			Presentation.set_progress();
+			this.set_progress();
 
 			// hide progressbar for images
 			if (this.options.hideprogress) {
@@ -155,7 +159,7 @@ Presentation = {};
 	}
 
 	// Go to next section
-	Presentation.next = function() {
+	this.next = function() {
 		next = this.current_section.next('section');
 		if (next.length) {
 			num = this.current_num + 1;
@@ -164,7 +168,7 @@ Presentation = {};
 	}
 
 	// Go to previous section
-	Presentation.prev = function() {
+	this.prev = function() {
 		prev = this.current_section.prev('section');
 		if (prev.length) {
 			num = this.current_num - 1;
@@ -173,7 +177,7 @@ Presentation = {};
 	}
 
 	// Set sizes for global object
-	Presentation.set_styles = function() {
+	this.set_styles = function() {
 		options = this.get_options();
 		this.obj.css({
 						'width'		: options.width,
@@ -182,12 +186,12 @@ Presentation = {};
 	}
 
 	// Get options
-	Presentation.get_options = function() {
+	this.get_options = function() {
 		return this.options;
 	}
 
 	// Update progressbar
-	Presentation.set_progress = function() {
+	this.set_progress = function() {
 		this.progressbar.show();
 		if (this.options.showpages) {
 			this.pages.show();
@@ -199,7 +203,7 @@ Presentation = {};
 	}
 
 	// Resize section
-	Presentation.resize = function() {
+	this.resize = function() {
 		if (!this.options.embedded) {
 			this.obj.addClass('full');
 		}
@@ -212,8 +216,7 @@ Presentation = {};
 	}
 
 	// Scale presentation
-	Presentation.scale = function() {
-		
+	this.scale = function() {
 		section_width = this.current_section.width();
 		section_height = this.current_section.height();
 
@@ -239,8 +242,7 @@ Presentation = {};
 	}
 
 	// Set presentation to center
-	Presentation.set_center = function() {
-
+	this.set_center = function() {
 		// Not set center if embedded and not fullscreen
 		if (this.options.embedded && !this.options.fullscreen) {
 			return true;
@@ -256,7 +258,7 @@ Presentation = {};
 	}
 
 	// Enter in presentation mode
-	Presentation.enter = function(section) {
+	this.enter = function(section) {
 		if (this.is_enter) {
 			return false;
 		}
@@ -271,29 +273,29 @@ Presentation = {};
 		$('body').keyup(this.uphandler = function(e) {
 			if (e.keyCode == 39) {
 				// Right
-				Presentation.next();
+				this_.next();
 			} else if (e.keyCode == 37) {
 				// Left
-				Presentation.prev();
+				this_.prev();
 			} else if (e.keyCode == 27) {
 				// Escale
-				Presentation.exit();
+				this_.exit();
 			} else if (e.keyCode == 36) {
 				// Home
-				Presentation.set_current_section(Presentation.first_section);
+				this_.set_current_section(this_.first_section);
 			} else if (e.keyCode == 35) {
 				// End
-				Presentation.set_current_section(Presentation.last_section);
+				this_.set_current_section(this_.last_section);
 			}
 		});
 
 		$(window).resize(this.resizehandler = function() {
-			Presentation.resize();
+			this_.resize();
 		})
 
 		$(window).bind('popstate', this.pophandler = function() {
-			Presentation.find_current_section();
-			Presentation.set_current_section(this.current_section, null, true);
+			this_.find_current_section();
+			this_.set_current_section(this.current_section, null, true);
 		});
 
 		// Black screen for fullscreen mode
@@ -317,7 +319,7 @@ Presentation = {};
 	}
 
 	// Exit from presentation mode
-	Presentation.exit = function() {
+	this.exit = function() {
 		this.obj.removeClass('full');
 		this.sections.addClass('nofull');
 
@@ -363,7 +365,7 @@ Presentation = {};
 	}
 
 	// Scale images
-	Presentation.prepare_images = function() {
+	this.prepare_images = function() {
 		$.each(this.sections, function(index, section) {
 			var elems = $(this).find('*');
 			if (elems.length == 1) {
@@ -372,7 +374,6 @@ Presentation = {};
 					elems.load(function() {
 						var w = this.width;
 						var h = this.height;
-						console.log(this)
 						if (this.width > this.height) {
 							this.style.width = '100%';
 						} else {
@@ -386,19 +387,16 @@ Presentation = {};
 	}
 
 	// Set options
-	Presentation.set_options = function(object, is_init) {
+	this.set_options = function(object, is_init) {
 		$.each(object, function(key, value) {
-			Presentation.options[key] = value;
+			this_.options[key] = value;
 
 			// Set default options if init
 			if (is_init) {
-				Presentation.default_options[key] = value;
+				this_.default_options[key] = value;
 			}
 		});
 	}
 
-	Presentation.destruct = function() {
-		this.is_init = false;
-	}
-
-})(Presentation);
+	this.init();
+};
