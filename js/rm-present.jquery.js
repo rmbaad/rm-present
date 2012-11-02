@@ -1,11 +1,9 @@
 function Presentation(id, options) {
-
 	var this_ = this;
 
 	this.init = function() {
 		// just one init
 		if (typeof(is_init) != 'undefined') {
-			this.enter();
 			return this;
 		}
 		is_init = true;
@@ -28,7 +26,7 @@ function Presentation(id, options) {
 								width:			'576px',	// width of presentation if not fullscreen
 								height:			'324px',	// -- || --
 								fullscreen:		true,		// show presentation in fullscreen
-								embedded:		false,
+								embedded:		false,		// show presentation inline
 								addcontrols:	false,		// add left and right navigation block
 								hideprogress:	false,		// hide progressbar on fullscreen images
 								showpages:		true		// show current page
@@ -48,15 +46,11 @@ function Presentation(id, options) {
 
 			// add next litener
 			this.next_buttons = $('.pr-next');
-			this.next_buttons.click(function() {
-				this_.next();
-			});
+			this.next_buttons.hide();
 
 			// add prev litener
 			this.prev_buttons = $('.pr-prev');
-			this.prev_buttons.click(function() {
-				this_.prev();
-			});
+			this.prev_buttons.hide();
 		}
 
 		// Add progressbar
@@ -65,6 +59,13 @@ function Presentation(id, options) {
 		// Add pages
 		this.obj.append('<div class="pr-pages" id="pr-pages"></div>');
 		this.pages = $('#pr-pages');
+
+		// Black screen for fullscreen mode
+		if (this.options.fullscreen) {
+			this.obj.before('<div id="presentation_back"></div>');
+			this.presentation_back = $('#presentation_back');
+			this.presentation_back.hide();
+		}
 
 		this.prepare_images();
 
@@ -298,13 +299,20 @@ function Presentation(id, options) {
 			this_.set_current_section(this.current_section, null, true);
 		});
 
-		// Black screen for fullscreen mode
 		if (this.options.fullscreen) {
-			this.obj.before('<div id="presentation_back"></div>');
-			this.presentation_back = $('#presentation_back');
+			this.presentation_back.show();
 		}
 
-		$('.pr-prev, .pr-next').show();
+		if (this.options.addcontrols) {
+			$('.pr-prev, .pr-next').show();
+			this.next_buttons.click(function() {
+				this_.next();
+			});
+			this.prev_buttons.click(function() {
+				this_.prev();
+			});
+		}
+
 		this.set_progress();
 		this.sections.hide();
 		this.set_current_section(section);
@@ -361,7 +369,7 @@ function Presentation(id, options) {
 		this.obj.css(this.scale_style);
 		this.obj.removeClass('enter');
 
-		this.presentation_back.remove();
+		this.presentation_back.hide();
 	}
 
 	// Scale images
